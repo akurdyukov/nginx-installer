@@ -1,0 +1,6 @@
+distr/
+*.suo
+bin/
+obj/
+*.user
+files.wxs
