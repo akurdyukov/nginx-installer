@@ -11,15 +11,27 @@
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 
     <Feature Id="ProductFeature" Title="Nginx" Level="1">
-			<ComponentGroupRef Id="ComponentGroup" />
-		</Feature>
-	</Product>
+			<ComponentGroupRef Id="NginxGroup" />
+      <ComponentGroupRef Id="NssmGroup" />
+    </Feature>
 
+    <InstallExecuteSequence>
+      <Custom Action="InstallService" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="RemoveService" After="InstallInitialize">Installed AND NOT UPGRADINGPRODUCTCODE</Custom>
+    </InstallExecuteSequence>
+    
+    <CustomAction Id="InstallService" Execute="deferred" Impersonate="no" Return="check" Directory="TARGETDIR"
+                  ExeCommand="&quot;[#nssm.exe]&quot; install nginx &quot;[#nginx.exe]&quot;" />
+    
+    <CustomAction Id="RemoveService" Execute="deferred" Impersonate="no" Return="check" Directory="TARGETDIR"
+                  ExeCommand="&quot;[#nssm.exe]&quot; remove nginx confirm" />
+  </Product>
+  
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="nginx" />
-			</Directory>
+		  <Directory Id="INSTALLFOLDER" Name="nginx" />
 		</Directory>
+    
+    <SetDirectory Id="INSTALLFOLDER" Value="[WindowsVolume]nginx"/>
 	</Fragment>
 </Wix>

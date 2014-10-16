@@ -1,0 +1,1 @@
+msiexec /i nginx-installer\bin\Debug\nginx-installer.msi /l*v install.log

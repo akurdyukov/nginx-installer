@@ -3,4 +3,5 @@ distr/
 bin/
 obj/
 *.user
-files.wxs
+*-files.wxs
+*.log
